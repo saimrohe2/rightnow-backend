@@ -17,7 +17,7 @@ const allowedOrigins = [
   'http://localhost:3000', // Keep for local frontend development (if you use port 3000)
   'http://localhost:5000', // Keep for local frontend development (if you use port 5000)
   // Your deployed Netlify frontend URL:
-  'https://rightnowtest.netlify.app/' // <-- THIS IS THE UPDATED LINE
+  'https://rightnowtest.netlify.app' // <-- THIS IS THE UPDATED LINE
 ];
 
 // Middleware
