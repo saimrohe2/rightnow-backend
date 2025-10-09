@@ -37,7 +37,7 @@ exports.findScenario = async (req, res) => {
       throw new Error('Gemini API key is not configured.');
     }
     
-    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
+    const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
     
     const apiResponse = await fetch(API_URL, {
       method: 'POST',
