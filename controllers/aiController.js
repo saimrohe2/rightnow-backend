@@ -10,7 +10,9 @@ exports.explainText = async (req, res) => {
       return res.status(400).json({ message: 'Text to explain is required.' });
     }
 
-    // This prompt is specifically designed to simplify text
+    console.log("(Explain) Querying AI to simplify text...");
+
+    // This prompt is specifically designed to simplify legal jargon
     const prompt = `
       Explain the following legal text in very simple, easy-to-understand terms, as if you were explaining it to a 10-year-old.
       
@@ -24,10 +26,10 @@ exports.explainText = async (req, res) => {
       throw new Error('Gemini API key is not configured.');
     }
 
-    // UPDATED: Using the stable v1beta and -latest model name
-    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
+    // UPDATED: Using 'gemini-pro' for consistent stability with your search controller
+    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`;
     
-    let aiResponse = null; // Initialized to avoid reference errors
+    let aiResponse = null; 
     const maxRetries = 3;
 
     for (let i = 0; i < maxRetries; i++) {
@@ -39,11 +41,11 @@ exports.explainText = async (req, res) => {
 
         if (apiResponse.ok) {
             aiResponse = await apiResponse.json();
-            break; // Success, exit the loop
+            break; // Success, exit the retry loop
         }
 
         if (apiResponse.status === 503 && i < maxRetries - 1) {
-            console.log(`(Explain) AI model is overloaded. Retrying in ${i + 1} second(s)...`);
+            console.log(`(Explain) AI model overloaded. Retrying in ${i + 1} second(s)...`);
             await sleep((i + 1) * 1000);
         } else {
             const errorBody = await apiResponse.text();
@@ -52,7 +54,8 @@ exports.explainText = async (req, res) => {
         }
     }
 
-    if (!aiResponse || !aiResponse.candidates || aiResponse.candidates.length === 0) {
+    // Ensure the response contains valid candidates
+    if (!aiResponse || !aiResponse.candidates || aiResponse.candidates.length === 0 || !aiResponse.candidates[0].content) {
         throw new Error('AI did not provide a valid response for the explanation.');
     }
 
