@@ -26,8 +26,8 @@ exports.explainText = async (req, res) => {
       throw new Error('Gemini API key is not configured.');
     }
 
-    // UPDATED: Using 'gemini-pro' for consistent stability with your search controller
-    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`;
+    // UPDATED: Using 'gemini-3-flash-preview' as per the latest documentation
+    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${GEMINI_API_KEY}`;
     
     let aiResponse = null; 
     const maxRetries = 3;
