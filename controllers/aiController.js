@@ -24,8 +24,7 @@ exports.explainText = async (req, res) => {
       throw new Error('Gemini API key is not configured.');
     }
 
-const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;    
-    let aiResponse;
+https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}    let aiResponse;
     const maxRetries = 3;
 
     for (let i = 0; i < maxRetries; i++) {
