@@ -24,7 +24,10 @@ exports.explainText = async (req, res) => {
       throw new Error('Gemini API key is not configured.');
     }
 
-const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`
+    // UPDATED: Using the stable v1beta and -latest model name
+    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
+    
+    let aiResponse = null; // Initialized to avoid reference errors
     const maxRetries = 3;
 
     for (let i = 0; i < maxRetries; i++) {
@@ -45,12 +48,12 @@ const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-
         } else {
             const errorBody = await apiResponse.text();
             console.error("(Explain) AI API Error:", errorBody);
-            throw new Error('AI service failed to respond after retries.');
+            throw new Error(`AI service failed with status ${apiResponse.status}`);
         }
     }
 
-    if (!aiResponse) {
-        throw new Error('AI did not provide a response for the explanation.');
+    if (!aiResponse || !aiResponse.candidates || aiResponse.candidates.length === 0) {
+        throw new Error('AI did not provide a valid response for the explanation.');
     }
 
     const simpleExplanation = aiResponse.candidates[0].content.parts[0].text;
