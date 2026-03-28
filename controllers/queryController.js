@@ -19,8 +19,8 @@ exports.findScenario = async (req, res) => {
       throw new Error('Gemini API key is not configured.');
     }
 
-    // UPDATED: Using 'gemini-pro' via 'v1beta' for maximum stability
-    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`;
+    // UPDATED: Using 'gemini-3-flash-preview' as per latest March 2026 documentation
+    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${GEMINI_API_KEY}`;
 
     const prompt = `
       Analyze the user's situation in India and respond ONLY as a raw JSON object with these keys: "rights_text", "law_reference", "script".
@@ -32,7 +32,7 @@ exports.findScenario = async (req, res) => {
       JSON Response:
     `;
 
-    // Fetch call with all necessary safety settings included
+    // Fetch call with updated model and safety settings
     const apiResponse = await fetch(API_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
